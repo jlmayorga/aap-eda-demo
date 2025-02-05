@@ -23,9 +23,10 @@
           organization: Default
           include_events: true
           job_args:
-            affected_path: "{{event.payload.path }}"
-            change_type: "{{event.payload.type }}"
-            timestamp: "{{event.payload.timestamp }}"
+            extra_vars:
+              affected_path: "{{event.payload.path }}"
+              change_type: "{{event.payload.type }}"
+              timestamp: "{{event.payload.timestamp }}"
     - name: Webhook Event
       condition: true
       action:
