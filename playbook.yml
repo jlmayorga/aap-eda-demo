@@ -1,0 +1,11 @@
+# Ansible Playbook to run stat on a file
+---
+- name: Run stat on a file
+  hosts: all
+  remote_user: ec2-user
+  tasks:
+    - name: Run stat on a file
+      stat:
+        path: /etc/test
+
+        
