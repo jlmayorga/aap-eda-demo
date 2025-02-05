@@ -20,7 +20,7 @@
         debug:
           msg: "Webhook event detected"
     - name: Detect directory changes
-      condition: event.payload.type == "modified" orevent.payload.type == "created" orevent.payload.type == "deleted" orevent.payload.type == "moved"
+      condition: event.payload.type == "modified" 
       action:
         run_job_template:
           name: DirectoryRemediation
