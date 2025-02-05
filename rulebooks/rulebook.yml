@@ -18,7 +18,7 @@
       condition: true
       action:
         debug:
-          msg: "Webhook event detected"
+          msg: "Webhook event detected: {{ event.payload.type }}"
     - name: Detect directory changes
       condition: event.payload.type == "modified" 
       action:
