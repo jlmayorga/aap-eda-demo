@@ -1,0 +1,37 @@
+---
+- name: Remediate directory changes
+  hosts: all
+  become: true
+  
+  tasks:
+    - name: Log the detected change
+      ansible.builtin.debug:
+        msg: "Directory change detected - Path: {{ affected_path }}, Type: {{ change_type }}, Time: {{ timestamp }}"
+    
+    - name: Send notification
+      ansible.builtin.mail:
+        subject: "Critical Directory Change Detected on {{ inventory_hostname }}"
+        body: |
+          A directory change was detected:
+          Path: {{ affected_path }}
+          Change Type: {{ change_type }}
+          Timestamp: {{ timestamp }}
+          
+          Please investigate this change immediately.
+        to: "{{ alert_email }}"
+    
+    # Add remediation tasks based on your requirements
+    # For example, restore from backup, reset permissions, etc.
+    
+    - name: Check directory permissions
+      ansible.builtin.stat:
+        path: "{{ affected_path }}"
+      register: dir_stats
+    
+    - name: Restore default permissions if needed
+      ansible.builtin.file:
+        path: "{{ affected_path }}"
+        mode: "0755"  # Adjust based on your requirements
+        owner: root   # Adjust based on your requirements
+        group: root   # Adjust based on your requirements
+      when: dir_stats.stat.mode != '0755'  # Adjust condition based on your requirements
