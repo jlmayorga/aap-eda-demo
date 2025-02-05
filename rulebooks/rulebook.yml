@@ -2,7 +2,7 @@
 - name: Monitor critical directory changes
   hosts: all
   sources:
-    - ansible.eda.watchdog:
+    - ansible.eda.file_watch:
         paths:
           - /var/log
           - /run/user
