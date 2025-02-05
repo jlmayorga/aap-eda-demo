@@ -20,14 +20,14 @@
         debug:
           msg: "Webhook event detected"
     - name: Detect directory changes
-      condition: event.type == "modified" or event.type == "created" or event.type == "deleted" or event.type == "moved"
+      condition: payload.event.type == "modified" or payload.event.type == "created" or payload.event.type == "deleted" or payload.event.type == "moved"
       action:
         run_job_template:
           name: DirectoryRemediation
           organization: Default
           include_events: true
           job_args:
-            affected_path: "{{ event.path }}"
-            change_type: "{{ event.type }}"
-            timestamp: "{{ event.timestamp }}"
+            affected_path: "{{ payload.event.path }}"
+            change_type: "{{ payload.event.type }}"
+            timestamp: "{{ payload.event.timestamp }}"
             
