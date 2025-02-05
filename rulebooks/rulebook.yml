@@ -3,11 +3,7 @@
   hosts: all
   sources:
     - ansible.eda.file_watch:
-        paths:
-          - /var/log
-          - /run/user
-          - /var
-          - /etc
+        path: /var/log
         recursive: true
         patterns: ['*']
         ignore_patterns: ['*.tmp']
