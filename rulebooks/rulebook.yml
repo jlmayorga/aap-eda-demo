@@ -1,0 +1,25 @@
+---
+- name: Monitor critical directory changes
+  hosts: all
+  sources:
+    - ansible.eda.watchdog:
+        paths:
+          - /var/log
+          - /run/user
+          - /var
+          - /etc
+        recursive: true
+        patterns: ['*']
+        ignore_patterns: ['*.tmp']
+        events: ['modified', 'created', 'deleted', 'moved']
+  
+  rules:
+    - name: Detect directory changes
+      condition: event.type == "modified" or event.type == "created" or event.type == "deleted" or event.type == "moved"
+      action:
+        run_playbook:
+          name: remediate_directory_changes.yml
+          extra_vars:
+            affected_path: "{{ event.src_path }}"
+            change_type: "{{ event.type }}"
+            timestamp: "{{ ansible.eda.event.timestamp }}"
