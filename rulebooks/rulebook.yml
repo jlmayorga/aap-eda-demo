@@ -14,13 +14,9 @@
         events: ['modified', 'created', 'deleted', 'moved']
   
   rules:
-    - name: Webhook Event
-      condition: true
-      action:
-        debug:
-          msg: "Webhook event detected: {{ event.payload.type }}"
-    - name: Detect directory changes
-      condition: true
+   
+    - name: Run Playbook
+      condition: event.payload.type == 'modified'
       action:
         run_job_template:
           name: DirectoryRemediation
@@ -30,4 +26,9 @@
             affected_path: "{{event.payload.path }}"
             change_type: "{{event.payload.type }}"
             timestamp: "{{event.payload.timestamp }}"
+    - name: Webhook Event
+      condition: true
+      action:
+        debug:
+          msg: "Webhook event detected: {{ event.payload.type }}"
             
