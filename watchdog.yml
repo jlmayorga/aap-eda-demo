@@ -1,0 +1,22 @@
+# Ansible Playbook to run as a watchdog
+---
+- name: Run watchdog job
+  hosts: all
+  remote_user: ec2-user
+  tasks:
+    - name: Print a message
+      debug:
+        msg: "Running watchdog job"
+    - name: Run stat on a file
+      stat:
+        path: /var/log
+      register: stat_result
+    - name: Print directory stats
+      debug:
+        msg: |
+          Directory: {{stat_result.stat.path}}
+          Permissions are {{ stat_result.stat.mode }}
+          Owner is {{ stat_result.stat.pw_name }}
+          Group is {{ stat_result.stat.gr_name }}
+
+        
