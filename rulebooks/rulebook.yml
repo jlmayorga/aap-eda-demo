@@ -17,9 +17,12 @@
     - name: Detect directory changes
       condition: event.type == "modified" or event.type == "created" or event.type == "deleted" or event.type == "moved"
       action:
-        run_playbook:
-          name: remediate_directory_changes.yml
-          extra_vars:
-            affected_path: "{{ event.src_path }}"
+        run_job_template:
+          name: DirectoryRemediation
+          organization: Default
+          include_events: true
+          job_args:
+            affected_path: "{{ event.path }}"
             change_type: "{{ event.type }}"
-            timestamp: "{{ ansible.eda.event.timestamp }}"
+            timestamp: "{{ event.timestamp }}"
+            
